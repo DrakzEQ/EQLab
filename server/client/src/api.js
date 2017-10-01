@@ -35,6 +35,8 @@ const zone = {
     requests.get('/zone/zonelist'),
   getSpawnTreeData: zoneName => 
     requests.get(`/zone/spawntree/${zoneName}`),
+  getSingleSpawnTreeData: spawn2ID => 
+    requests.get(`/zone/singlespawn2tree/${spawn2ID}`),
 
   getSpawnData: spawn2ID => 
     requests.get(`/zone/spawn/${spawn2ID}`),

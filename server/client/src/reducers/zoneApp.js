@@ -3,7 +3,9 @@ import {
   ZONEAPP_SET_ZONE,
   ZONEAPP_BUILD_SPAWNTREE,
   ZONEAPP_CLEAR_SPAWNTREE,
-  ZONEAPP_ADD_SPAWN2
+  ZONEAPP_ADD_SPAWN2,
+  ZONEAPP_REFRESH_SPAWN2,
+  ZONEAPP_REMOVE_SPAWN2
 } from '../constants/actionTypes';
 
 function get_INITIAL_STATE() {
@@ -43,6 +45,21 @@ export default (state = get_INITIAL_STATE(), action) => {
       return {
         ...state,
         spawnTree: action.data ? [...state.spawnTree, action.data] : [...state.spawnTree]
+      }
+    case ZONEAPP_REFRESH_SPAWN2:
+      return {
+        ...state,
+        spawnTree: state.spawnTree.map(spawn2 => {
+          if (spawn2.id === action.spawn2Tree.id) {
+            return action.spawn2Tree
+          }
+          return spawn2
+        })
+      }
+    case ZONEAPP_REMOVE_SPAWN2:
+      return {
+        ...state,
+        spawnTree: state.spawnTree.filter(spawn2 => spawn2.id !== action.spawn2ID)
       }
     default:
       return state;

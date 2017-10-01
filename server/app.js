@@ -46,34 +46,34 @@ app.use('/api', authRoutes);
 app.use('/api', apiRoutes);
 
 // Passport Middleware
-app.use(passport.initialize());
-app.use(passport.session());
-passport.use(User.createStrategy());
-passport.use(new JwtStrategy({
-  secretOrKey: config.jwt.secret,
-  jwtFromRequest: ExtractJwt.fromAuthHeaderWithScheme('jwt'),
-  issuer: config.jwt.issuer
-}, function(jwt_payload, next) {
-  User.findByUsername(jwt_payload.user.username, (err, user) => {
-    if (user) {
-      next(null, {
-        username: user.username,
-        status: user.status
-      });
-    } else {
-      next(null, false);
-    }
-  });
-}));
+// app.use(passport.initialize());
+// app.use(passport.session());
+// passport.use(User.createStrategy());
+// passport.use(new JwtStrategy({
+//   secretOrKey: config.jwt.secret,
+//   jwtFromRequest: ExtractJwt.fromAuthHeaderWithScheme('jwt'),
+//   issuer: config.jwt.issuer
+// }, function(jwt_payload, next) {
+//   User.findByUsername(jwt_payload.user.username, (err, user) => {
+//     if (user) {
+//       next(null, {
+//         username: user.username,
+//         status: user.status
+//       });
+//     } else {
+//       next(null, false);
+//     }
+//   });
+// }));
 // passport.serializeUser(User.serializeUser());
 // passport.deserializeUser(User.deserializeUser());
 
 // Sync Authentication Database
-auth_db.sync().then(() => { 
-  console.log("EQLab: Authentication Database Connection Successful");
-}).catch(err => {
-  console.log(err, "EQLab: Authentication Database Connection Failed");
-});
+// auth_db.sync().then(() => { 
+//   console.log("EQLab: Authentication Database Connection Successful");
+// }).catch(err => {
+//   console.log(err, "EQLab: Authentication Database Connection Failed");
+// });
 
 // Flash Messages
 // app.use(flash());

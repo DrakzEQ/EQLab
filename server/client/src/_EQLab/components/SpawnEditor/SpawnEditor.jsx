@@ -31,30 +31,27 @@ const mapDispatchToProps = dispatch => ({
     dispatch({ type: GLOBAL_LOAD_SPAWNEDITOR, payload }),
   unload: () =>
     dispatch({ type: GLOBAL_UNLOAD_SPAWNEDITOR }),
-  updateSpawn2: (id, delta, context, zone) => 
-    dispatch({ type: GLOBAL_UPDATE_SPAWN2, id, delta, context, zone }),
-  deleteSpawn2: (id, context, zone) => 
-    dispatch({ type: GLOBAL_DELETE_SPAWN2, id, context, zone }),
-  changeSpawngroup: (spawn2ID, spawngroupID, context, zone) => 
-    dispatch({ type: GLOBAL_CHANGE_SPAWNGROUP, spawn2ID, spawngroupID, context, zone }),
-  newSpawngroup: (spawn2ID, context, zone) => 
-    dispatch({ type: GLOBAL_POST_SPAWNGROUP, spawn2ID, context, zone }),
-  updateSpawngroup: (id, delta, spawn2ID, context, zone) => 
-    dispatch({ type: GLOBAL_UPDATE_SPAWNGROUP, id, delta, spawn2ID, context, zone }),
-  deleteSpawngroup: (id, spawn2ID, context, zone) => 
-    dispatch({ type: GLOBAL_DELETE_SPAWNGROUP, id, spawn2ID, context, zone }),
-  newSpawnentry: (spawngroupID, npcID, context, spawn2ID, zone) => 
-    dispatch({ type: GLOBAL_POST_SPAWNENTRY, spawngroupID, npcID, context, spawn2ID, zone}),
-  deleteSpawnentry: (spawngroupID, npcID, context, spawn2ID, zone) => 
-    dispatch({ type: GLOBAL_DELETE_SPAWNENTRY, spawngroupID, npcID, context, spawn2ID, zone})
+  updateSpawn2: (spawn2ID, delta, zone) => 
+    dispatch({ type: GLOBAL_UPDATE_SPAWN2, spawn2ID, delta }),
+  deleteSpawn2: (spawn2ID, zone) => 
+    dispatch({ type: GLOBAL_DELETE_SPAWN2, spawn2ID, zone }),
+  changeSpawngroup: (spawn2ID, spawngroupID, zone) => 
+    dispatch({ type: GLOBAL_CHANGE_SPAWNGROUP, spawn2ID, spawngroupID, zone }),
+  newSpawngroup: (spawn2ID, zone) => 
+    dispatch({ type: GLOBAL_POST_SPAWNGROUP, spawn2ID, zone }),
+  updateSpawngroup: (id, delta, spawn2ID, zone) => 
+    dispatch({ type: GLOBAL_UPDATE_SPAWNGROUP, id, delta, spawn2ID, zone }),
+  deleteSpawngroup: (id, spawn2ID, zone) => 
+    dispatch({ type: GLOBAL_DELETE_SPAWNGROUP, id, spawn2ID, zone }),
+  newSpawnentry: (spawngroupID, npcID, spawn2ID, zone) => 
+    dispatch({ type: GLOBAL_POST_SPAWNENTRY, spawngroupID, npcID, spawn2ID, zone}),
+  deleteSpawnentry: (spawngroupID, npcID, spawn2ID, zone) => 
+    dispatch({ type: GLOBAL_DELETE_SPAWNENTRY, spawngroupID, npcID, spawn2ID, zone})
 });
 
 class SpawnEditor extends React.Component {
   constructor(props) {
     super(props);
-    this.state = {
-      context: this.props.context || null
-    }
 
     this.submitSpawn2Form = (values, dispatch, props) => {
       return new Promise((resolve, reject) => {
@@ -64,7 +61,6 @@ class SpawnEditor extends React.Component {
             this.props.updateSpawn2(
               values.id, 
               delta,
-              this.state.context,
               this.props.zone ? this.props.zone : null
             );
             resolve();
@@ -95,7 +91,6 @@ class SpawnEditor extends React.Component {
               values.id, 
               delta,
               this.props.spawn.spawn2.id,
-              this.state.context,
               this.props.zone ? this.props.zone : null
             );
             resolve();
@@ -111,7 +106,6 @@ class SpawnEditor extends React.Component {
     this.newSpawngroup = () => {
       this.props.newSpawngroup(
         this.props.spawn.spawn2.id, 
-        this.state.context, 
         this.props.zone ? this.props.zone : null
       );
     }
@@ -121,7 +115,6 @@ class SpawnEditor extends React.Component {
         this.props.newSpawnentry(
           this.props.spawn.spawngroup.id,
           npcID,
-          this.state.context,
           this.props.spawn.spawn2.id,
           this.props.zone ? this.props.zone : null
         );
@@ -134,7 +127,6 @@ class SpawnEditor extends React.Component {
       }).then(() => {
         this.props.deleteSpawn2(
           this.props.spawn.spawn2.id, 
-          this.state.context, 
           this.props.zone ? this.props.zone : null
         );
       }, () => {});
@@ -144,7 +136,6 @@ class SpawnEditor extends React.Component {
       this.props.changeSpawngroup(
         this.props.spawn.spawn2.id, 
         spawngroupID,
-        this.state.context, 
         this.props.zone ? this.props.zone : null
       );
     }
@@ -156,7 +147,6 @@ class SpawnEditor extends React.Component {
         this.props.changeSpawngroup(
           this.props.spawn.spawn2.id, 
           0,
-          this.state.context, 
           this.props.zone ? this.props.zone : null
         );
       }, () => {});
@@ -170,7 +160,6 @@ class SpawnEditor extends React.Component {
         this.props.deleteSpawngroup(
           this.props.spawn.spawngroup.id, 
           this.props.spawn.spawn2.id, 
-          this.state.context, 
           this.props.zone ? this.props.zone : null
         );
       }, () => {});
@@ -184,7 +173,6 @@ class SpawnEditor extends React.Component {
         this.props.deleteSpawnentry(
           this.props.spawn.spawngroup.id,
           npcID,
-          this.state.context,
           this.props.spawn.spawn2.id,
           this.props.zone ? this.props.zone : null
         );  

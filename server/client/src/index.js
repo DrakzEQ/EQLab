@@ -14,7 +14,6 @@ import EQLab from './_EQLab/EQLab.jsx'
 const socket = io.connect(process.env.SOCKET_URL);
 
 ReactDOM.render((
-
   <Provider store={store}>
     <BrowserRouter>
       <SocketProvider socket={socket}>
@@ -22,8 +21,6 @@ ReactDOM.render((
       </SocketProvider>
     </BrowserRouter>
   </Provider>
-
-
 ), document.getElementById('index'));
 
 registerServiceWorker();

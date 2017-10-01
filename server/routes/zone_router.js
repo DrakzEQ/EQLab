@@ -62,6 +62,8 @@ zone_router.put("/spawn/spawngroup/:id", jsonParser, async (req, res, next) => {
 zone_router.post("/spawn/spawngroup/:spawn2ID", jsonParser, (req, res, next) => {
   zone.insertSpawngroup(req.params.spawn2ID, req.body.zone).then(data => {
     res.status(200).type('json').json(data);
+  }).catch(error => {
+    
   });
 });
 
@@ -120,11 +122,11 @@ zone_router.get("/spawn/:spawn2ID", async (req, res, next) => {
   res.status(200).type('json').json({ spawn2, spawngroup });
 });
 
-// zone_router.get("/spawn/:spawn2ID", (req, res, next) => {
-//   zone.getSpawnData(req.params.spawn2ID).then(data => {
-//     res.status(200).type('json').json(data);
-//   });
-// });
+zone_router.get("/singlespawn2tree/:spawn2ID", (req, res, next) => {
+  zone.getSingleSpawn2Tree(req.params.spawn2ID).then(data => {
+    res.status(200).type('json').json(data);
+  });
+});
 
 zone_router.get("/spawntree/:zoneName", (req, res, next) => {
   zone.getSpawnTree(req.params.zoneName).then(data => {

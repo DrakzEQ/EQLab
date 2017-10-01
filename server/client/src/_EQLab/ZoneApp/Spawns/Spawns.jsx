@@ -56,6 +56,10 @@ class Spawns extends React.Component {
     }
   }
 
+  componentDidUpdate() {
+    console.log('spawns update')
+  }
+
   render() {
 
     const columns = [{
@@ -145,7 +149,7 @@ class Spawns extends React.Component {
               this.state.mode
                 ? this.state.mode !== 'spawn'
                     ? <NPCEditor npcID={this.state.id}/>
-                    : <SpawnEditor context="zoneApp" zone={this.props.zone} spawn2ID={this.state.id}/>
+                    : <SpawnEditor zone={this.props.zone} spawn2ID={this.state.id}/>
                 : null
             }
           </Col>

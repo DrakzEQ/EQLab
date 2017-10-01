@@ -3,8 +3,8 @@ import api from '../api.js'
 import { 
   SUBAPP_UNLOAD,
   GLOBAL_RESET,
-  GLOBAL_LOAD_SPAWNEDITOR,
-  GLOBAL_UNLOAD_SPAWNEDITOR,
+  GLOBAL_LOAD_SPAWN,
+  GLOBAL_UNLOAD_SPAWN,
   GLOBAL_UPDATE_SPAWN2,
   GLOBAL_DELETE_SPAWN2,
   GLOBAL_CHANGE_SPAWNGROUP,
@@ -18,9 +18,10 @@ import {
   ZONEAPP_SET_ZONE,
   ZONEAPP_BUILD_SPAWNTREE,
   ZONEAPP_POST_SPAWN2,
-  ZONEAPP_ADD_SPAWN2
+  ZONEAPP_ADD_SPAWN2,
+  ZONEAPP_REFRESH_SPAWN2,
+  ZONEAPP_REMOVE_SPAWN2
 } from '../constants/actionTypes'
-
 
 export default function* rootSaga() {
   yield all([
@@ -56,78 +57,96 @@ function* selectZone(action) {
   ]);
 }
 
-function* refreshSpawns(spawn2ID, zone) {
-  const [spawn, spawnTree] = yield all([
-    call(api.zone.getSpawnData, spawn2ID),
-    call(api.zone.getSpawnTreeData, zone)
-  ]);
 
-  yield all([
-    put({ type: GLOBAL_LOAD_SPAWNEDITOR, payload: spawn }),
-    put({ type: ZONEAPP_BUILD_SPAWNTREE, spawnTree })
-  ]);
+/*
+*  --------------------REFRESH
+*/
+
+function* refreshSingleSpawnTree(spawn2ID) {
+  const spawn2Tree = yield call(api.zone.getSingleSpawnTreeData, spawn2ID);
+  yield put({ type: ZONEAPP_REFRESH_SPAWN2, spawn2Tree });
 }
+
+function* refreshSpawnData(spawn2ID) {
+  const spawn = yield call(api.zone.getSpawnData, spawn2ID);
+  yield put({ type: GLOBAL_LOAD_SPAWN, payload: spawn });
+}
+
+/*
+*  --------------------SPAWN 2
+*/
 
 function* postSpawn2(action) {
   yield put({ type: ZONEAPP_ADD_SPAWN2, data: action.data });
 }
 
 function* updateSpawn2(action) {
-  if (action.id && action.context === 'zoneApp') {
-    yield call(refreshSpawns, action.id, action.zone);
-  }
+  yield all([
+    call(refreshSpawn2, action.spawn2ID),
+    action.zone && call(refreshSingleSpawnTree, action.spawn2ID)
+  ]);
 }
 
 function* deleteSpawn2(action) {
-  if (action.id && action.context === 'zoneApp') {
-    yield call(api.zone.deleteSpawn2, action.id);
+  yield call(api.zone.deleteSpawn2, action.spawn2ID);
 
-    const spawnTree = yield call(api.zone.getSpawnTreeData, action.zone);
-
-    yield all([
-      put({ type: GLOBAL_UNLOAD_SPAWNEDITOR }),
-      put({ type: ZONEAPP_BUILD_SPAWNTREE, spawnTree })
-    ]);
-  }
+  yield all([
+    put({ type: GLOBAL_UNLOAD_SPAWN }),
+    put({ type: ZONEAPP_REMOVE_SPAWN2, spawn2ID: action.spawn2ID })
+  ]);
 }
 
 function* changeSpawngroup(action) {
-  if (action.spawn2ID && action.context === 'zoneApp') {
-    yield call(api.zone.updateSpawn2, action.spawn2ID, { "spawngroupID": action.spawngroupID });
-    yield call(refreshSpawns, action.spawn2ID, action.zone);
-  }
+  yield call(api.zone.putSpawn2, action.spawn2ID, { "spawngroupID": action.spawngroupID });
+  yield all([
+    call(refreshSpawn2, action.spawn2ID),
+    action.zone && call(refreshSingleSpawnTree, action.spawn2ID)
+  ]);
 }
 
+/*
+*  --------------------SPAWNGROUP
+*/
+
 function* postSpawngroup(action) {
-  if (action.spawn2ID && action.context === 'zoneApp') {
-    yield call(api.zone.postSpawngroup, action.spawn2ID, action.zone);
-    yield call(refreshSpawns, action.spawn2ID, action.zone);
-  }
+  yield call(api.zone.postSpawngroup, action.spawn2ID, action.zone);
+  yield all([
+    call(refreshSpawn2, action.spawn2ID),
+    action.zone && call(refreshSingleSpawnTree, action.spawn2ID)
+  ]);
 }
 
 function* updateSpawngroup(action) {
-  if (action.spawn2ID && action.context === 'zoneApp') {
-    yield call(refreshSpawns, action.spawn2ID, action.zone);
-  }
+  yield all([
+    call(refreshSpawn2, action.spawn2ID),
+    action.zone && call(refreshSingleSpawnTree, action.spawn2ID)
+  ]);
 }
 
 function* deleteSpawngroup(action) {
-  if (action.context === 'zoneApp') {
-    yield call(api.zone.deleteSpawngroup, action.id);
-    yield call(refreshSpawns, action.spawn2ID, action.zone);
-  }
+  yield call(api.zone.deleteSpawngroup, action.id);
+  yield all([
+    call(refreshSpawn2, action.spawn2ID),
+    action.zone && call(refreshSingleSpawnTree, action.spawn2ID)
+  ]);
 }
 
+/*
+*  --------------------SPAWNENTRY
+*/
+
 function* postSpawnentry(action) {
-  if (action.context === 'zoneApp') {
-    yield call(api.zone.postSpawnentry, action.spawngroupID, action.npcID);
-    yield call(refreshSpawns, action.spawn2ID, action.zone);
-  }
+  yield call(api.zone.postSpawnentry, action.spawngroupID, action.npcID);
+  yield all([
+    call(refreshSpawn2, action.spawn2ID),
+    action.zone && call(refreshSingleSpawnTree, action.spawn2ID)
+  ]);
 }
 
 function* deleteSpawnentry(action) {
-  if (action.context === 'zoneApp') {
-    yield call(api.zone.deleteSpawnentry, action.spawngroupID, action.npcID);
-    yield call(refreshSpawns, action.spawn2ID, action.zone);
-  }
+  yield call(api.zone.deleteSpawnentry, action.spawngroupID, action.npcID);
+  yield all([
+    call(refreshSpawn2, action.spawn2ID),
+    action.zone && call(refreshSingleSpawnTree, action.spawn2ID)
+  ]);
 }

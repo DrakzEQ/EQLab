@@ -86,7 +86,7 @@ module.exports = {
     let spawntree  = new Treeize();
     SQLdata[0] = sanitize(SQLdata[0]);
     spawntree = spawntree.grow(SQLdata[0]).getData();
-    return spawntree;
+    return spawntree[0];
   },
 
   getSpawnData: async (spawn2ID) => {
@@ -235,7 +235,8 @@ module.exports = {
   },
 
   insertSpawnentry: async (spawngroupID, npcID) => {
-    return await db.insert('spawnentry', [{ spawngroupID, npcID }]);
+    let test = await db.insert('spawnentry', [{ spawngroupID, npcID }]);
+    console.log(test)
   },
 
   updateSpawnentry: async (spawngroupID, npcID, chance) => {
