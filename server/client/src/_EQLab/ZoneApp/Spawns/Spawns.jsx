@@ -67,7 +67,8 @@ class Spawns extends React.Component {
           return (
             <Button 
               bsStyle="primary" 
-              bsSize="xs" 
+              bsSize="xs"
+              className="pull-left" 
               onClick={this.newSpawn2}
               disabled={ this.props.zone ? false : true } 
             >
@@ -83,7 +84,7 @@ class Spawns extends React.Component {
         resizable: false, 
         filterable: true,
         Cell: row => { 
-          return <span><a onClick={this.handleSpawn} key={row.value} id={row.value}>{row.value}</a></span>
+          return <a onClick={this.handleSpawn} key={row.value} id={row.value}>{row.value}</a>
         }
       }, {
         Header: 'v',
@@ -106,17 +107,27 @@ class Spawns extends React.Component {
         resizable: false, 
         filterable: true,
         Cell: row => {
-          if (!row.value.id) {
+          if (!row.value) {
             return null;
           } else {
             return (
               <div>
                 <p>{row.value.name}</p>
-                <ul>
-                  {row.value.spawnentries.map(entry => {
-                    return <li onClick={this.handleNPC} key={entry.npc_id} id={entry.npc_id}>{entry.chance}% - {entry.npc_name}</li>
-                  })} 
-                </ul> 
+                {
+                  row.value.spawnentries
+                    ? <ul>
+                        {row.value.spawnentries.map(entry => {
+                          return(
+                            <li key={entry.npc_id}>
+                              <a onClick={this.handleNPC} id={entry.npc_id}>
+                                {entry.chance}% {entry.npc_name} ({entry.npc_level}{entry.npc_maxlevel ? `-${entry.npc_maxlevel}` : null})
+                              </a>
+                            </li>
+                          )
+                        })} 
+                      </ul> 
+                    : null
+                }
               </div>
             )
           }
@@ -127,7 +138,7 @@ class Spawns extends React.Component {
     return (
       <div id="Spawns">
         <Row>
-          <Col md={4}>
+          <Col md={7}>
             <ReactTable
               data={this.props.spawnTree}
               columns={columns}
@@ -139,16 +150,16 @@ class Spawns extends React.Component {
               ]}
               filterable={false}
               className="-striped -highlight"
-              style={{ height: 880, overFlowY: "auto", fontSize: 12 }}
+              style={{ height: 893, overFlowY: "auto", fontSize: 12 }}
               showPagination={false}
               pageSize={this.props.spawnTree.length}
             />
           </Col>
-          <Col md={8}>
+          <Col md={17}>
             {
               this.state.mode
                 ? this.state.mode !== 'spawn'
-                    ? <NPCEditor npcID={this.state.id}/>
+                    ? <NPCEditor npcID={this.state.id} style={{ height: 600 }}/>
                     : <SpawnEditor zone={this.props.zone} spawn2ID={this.state.id}/>
                 : null
             }

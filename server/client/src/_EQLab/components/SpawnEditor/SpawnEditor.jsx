@@ -7,8 +7,8 @@ import diff from 'object-diff'
 import { omit, pick, size } from 'lodash'
 import api from '../../../api.js'
 import {
-  GLOBAL_LOAD_SPAWNEDITOR,
-  GLOBAL_UNLOAD_SPAWNEDITOR,
+  GLOBAL_LOAD_SPAWN,
+  GLOBAL_UNLOAD_SPAWN,
   GLOBAL_UPDATE_SPAWN2,
   GLOBAL_DELETE_SPAWN2,
   GLOBAL_CHANGE_SPAWNGROUP,
@@ -28,9 +28,9 @@ const mapStateToProps = state => ({
 
 const mapDispatchToProps = dispatch => ({
   load: payload =>
-    dispatch({ type: GLOBAL_LOAD_SPAWNEDITOR, payload }),
+    dispatch({ type: GLOBAL_LOAD_SPAWN, payload }),
   unload: () =>
-    dispatch({ type: GLOBAL_UNLOAD_SPAWNEDITOR }),
+    dispatch({ type: GLOBAL_UNLOAD_SPAWN }),
   updateSpawn2: (spawn2ID, delta, zone) => 
     dispatch({ type: GLOBAL_UPDATE_SPAWN2, spawn2ID, delta }),
   deleteSpawn2: (spawn2ID, zone) => 
@@ -198,7 +198,7 @@ class SpawnEditor extends React.Component {
     return (
       <div id="SpawnEditor">
         <Row>
-          <Col md={12}>
+          <Col md={24}>
             {
               this.props.spawn.spawn2
                 ? <Spawn2
@@ -213,7 +213,7 @@ class SpawnEditor extends React.Component {
           </Col>
         </Row>
         <Row>
-          <Col md={12}>
+          <Col md={24}>
             {
               this.props.spawn.spawngroup
                 ? <SpawnGroup

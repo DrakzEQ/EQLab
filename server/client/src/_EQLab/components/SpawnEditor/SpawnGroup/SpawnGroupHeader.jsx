@@ -8,12 +8,12 @@ class SpawnGroupHeader extends React.PureComponent {
     const { formPristine, formSubmitting } = this.props
     return (
       <Row id="SpawnGroupHeader">
-        <Col md={3}>
+        <Col md={6}>
           <span className="panel-title">spawngroup: {this.props.input.value}</span>
         </Col>
-        <Col md={6}>
+        <Col md={12}>
         </Col>
-        <Col md={3}>
+        <Col md={6}>
           <ButtonToolbar className="pull-right">
             <Button href="#" bsStyle="danger" bsSize="xs" disabled={formSubmitting} onClick={this.props.deleteSpawngroup}>
               <FontAwesome name='times' />&nbsp;Delete
@@ -22,7 +22,7 @@ class SpawnGroupHeader extends React.PureComponent {
               <FontAwesome name='undo'/>&nbsp;Reset
             </Button>
             <Button bsStyle="primary" bsSize="xs" disabled={formPristine || formSubmitting} onClick={this.props.handleSubmit}>
-              <FontAwesome name='floppy-o'/>&nbsp;Save
+              <FontAwesome name='hdd-o'/>&nbsp;Save
             </Button>
           </ButtonToolbar>
         </Col>

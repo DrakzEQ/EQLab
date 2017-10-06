@@ -181,31 +181,6 @@ module.exports = {
     let SQLdata = await db.raw(queryStr);
     let lootTree  = new Treeize();
     SQLdata[0] = sanitize(SQLdata[0]);
-    // lootTree = lootTree.grow(SQLdata[0]).getData().map(function (loottable) {
-    //   return {
-    //     "id": loottable.id.toString(),
-    //     "text": loottable.name,
-    //     "state": {
-    //       "opened": true
-    //     },
-    //     "children": loottable.lootdrops.map(function (lootdrop) {
-    //       return {
-    //         "text": lootdrop.id.toString() + " - " + lootdrop.name,
-    //         "state": {
-    //           "opened": true
-    //         },
-    //         "children": lootdrop.items.map(function (item) {
-    //           return {
-    //             "text": item.id.toString() + " - " + item.name,
-    //             "state": {
-    //               "opened": true
-    //             }
-    //           }
-    //         })               
-    //       }
-    //     })
-    //   }
-    // });
     lootTree = lootTree.grow(SQLdata[0]).getData()[0]
     return lootTree;
   },

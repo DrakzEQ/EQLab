@@ -88,8 +88,8 @@ class ZoneApp extends React.Component {
       <div id="Zone">
         <Tab.Container id="zone-panel" activeKey={this.state.pane} onSelect={this.onSelectPane}>
           <Panel header={
-            <Row>
-              <Col md={4}>
+            <Row id="zone-panel-header">
+              <Col md={8}>
               <div className="form-group">
               <Select
                   name="selectzone"
@@ -105,13 +105,13 @@ class ZoneApp extends React.Component {
                 />
               </div>
               </Col>
-              <Col md={4}>
+              <Col md={8}>
                 <Nav bsStyle="tabs">
                   <NavItem eventKey="spawns">Spawns</NavItem>
                   <NavItem eventKey="loot">Loot</NavItem>
                 </Nav> 
               </Col>
-              <Col md={4}>
+              <Col md={8}>
               </Col>
             </Row>
           }>

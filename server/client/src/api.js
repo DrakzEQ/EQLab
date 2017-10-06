@@ -70,7 +70,20 @@ const npc = {
   getNPCData: npcID =>
     requests.get(`/npc/${npcID}`),
   searchNPCs: searchTerm =>
-    requests.get(`/npc/search/${searchTerm}`)
+    requests.get(`/npc/search/${searchTerm}`),
+  getSpellList: () =>
+    requests.get(`/npc/spelllist`),
+  getPassiveList: () =>
+    requests.get(`/npc/passivelist`),
+  getRaceList: () =>
+    requests.get(`/npc/racelist`),
+  getFactionList: () =>
+    requests.get(`/npc/factionlist`),
+  getAltCurrencyList: () =>
+    requests.get(`/npc/altcurrencylist`),
+  getTintList: () =>
+    requests.get(`/npc/tintlist`)
+
 };
 
 export default {

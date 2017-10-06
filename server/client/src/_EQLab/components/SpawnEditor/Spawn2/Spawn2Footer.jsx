@@ -63,7 +63,7 @@ class Spawn2Footer extends React.Component {
   render() {
     return (
       <Row id="Spawn2Footer">
-        <Col md={5}>
+        <Col md={10}>
           <FormGroup> 
             <Select.Async
               name="selectspawngroup"
@@ -86,12 +86,14 @@ class Spawn2Footer extends React.Component {
             />
           </FormGroup>
         </Col>
-        <Col md={7}>
+        <Col md={14}>
           { 
             !this.props.input.value
-              ? <Button bsStyle="default" bsSize="xs" onClick={this.props.newSpawngroup}>New Spawngroup</Button>
-              : <Button bsStyle="danger" bsSize="xs" onClick={this.props.clearSpawngroup}>
-                  <FontAwesome name="times" />
+              ? <Button bsStyle="primary" bsSize="xs" style={{ marginTop: 20 }} onClick={this.props.newSpawngroup}>
+                  <FontAwesome name="plus"/>&nbsp;New Spawngroup
+                </Button>
+              : <Button bsStyle="danger" bsSize="xs"   style={{ marginTop: 20 }} onClick={this.props.clearSpawngroup}>
+                  <FontAwesome name="chain-broken"/>&nbsp;Clear
                 </Button>
           }
         </Col>

@@ -6,14 +6,11 @@ import Home from './Home/Home.jsx';
 import ZoneApp from './ZoneApp/ZoneApp.jsx';
 
 
-
-
-
 class EQLab extends React.Component {
   render() {
     return (
       <div id="EQLab">
-        <Navbar default staticTop inverse collapseOnSelect fluid>
+        <Navbar default staticTop collapseOnSelect fluid>
           <Navbar.Header>
             <Navbar.Brand>
               <NavLink to="/">EQLab</NavLink>
@@ -31,7 +28,7 @@ class EQLab extends React.Component {
         </Navbar>
         <Grid fluid>
           <Row>
-            <Col md={12}>
+            <Col md={24}>
               <Switch>
                 <Route exact path='/' component={Home}/>
                 <Route path='/zone' component={ZoneApp}/>

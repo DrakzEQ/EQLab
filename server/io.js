@@ -22,9 +22,9 @@ exports.initialize = server => {
 
       if (io.sockets.adapter.rooms[room].length) {
         const onNewSpawn2 = sqlEvent.add(`${dbName}.spawn2`, async (oldRow, newRow, event) => {
-          if (oldRow === null) {
-            let newSpawn2 = (await zone.getSingleSpawn2Tree(newRow.fields.id))[0]
-            io.to(room).emit('spawn2insert', newSpawn2);
+          if (oldRow === null) { 
+            let spawn2 = await zone.getSingleSpawn2Tree(newRow.fields.id)
+            io.to(room).emit('spawn2insert', spawn2);
           }
         });  
       }

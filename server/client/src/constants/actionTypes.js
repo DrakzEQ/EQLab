@@ -1,5 +1,3 @@
-// APP
-export const APP_LOAD = 'APP_LOAD';
 // AUTH
 export const AUTH_LOGIN = 'AUTH_LOGIN';
 export const AUTH_LOGOUT = 'AUTH_LOGOUT';

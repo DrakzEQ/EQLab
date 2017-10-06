@@ -1,20 +1,18 @@
-import React from 'react';
-import { Row, Col, Panel, Tab, Nav, NavItem, } from 'react-bootstrap';
-import { connect } from 'react-redux';
-import { reduxForm, FormSection, Field } from 'redux-form';
-import api from '../../../api.js';
+import React from 'react'
+import { Row, Col, Panel, Tab, Nav, NavItem, } from 'react-bootstrap'
+import { connect } from 'react-redux'
+import { reduxForm, FormSection, Field } from 'redux-form'
+import api from '../../../api.js'
 import {
   GLOBAL_LOAD_NPC,
   GLOBAL_UNLOAD_NPC
-} from '../../../constants/actionTypes';
-import Type from './Type.jsx';
-// import Spells from './Spells.jsx';
-// import Loot from './Loot.jsx';
+} from '../../../constants/actionTypes'
+import NPCEditorHeader from './NPCEditorHeader.jsx'
+import NPCType from './NPCType.jsx'
+import NPCSpecialAbilities from './NPCSpecialAbilities.jsx'
+// import NPCSpells from './NPCSpells.jsx'
+// import NPCLoot from './NPCLoot.jsx'
 
-const NPCEditorOptions = {
-  form: 'NPCEditor',
-  enableReinitialize: true
-}
 
 const mapStateToProps = state => ({
   initialValues: state.global.npc
@@ -27,7 +25,19 @@ const mapDispatchToProps = dispatch => ({
     dispatch({ type: GLOBAL_UNLOAD_NPC }),
 });
 
+const NPCEditorOptions = {
+  form: 'NPCEditor',
+  enableReinitialize: true
+}
+
 class NPCEditor extends React.Component {
+  constructor(props) {
+    super(props);
+
+    this.deleteNPC = () => {
+      console.log('NPC Deleted');
+    }
+  }
 
   componentWillReceiveProps(nextProps) {
     if (nextProps.npcID !== this.props.npcID) {
@@ -39,48 +49,49 @@ class NPCEditor extends React.Component {
     this.props.onLoad(api.npc.getNPCData(this.props.npcID))
   }
 
-  componentDidUpdate() {
-    console.log(this.props)
-  }
-
   componentWillUnmount() {
     this.props.onUnload();
   }
 
-
   render() {
-
-    const { handleSubmit } = this.props;
-
-    const Header = props => (
-      <h5>npc - {props.input.value}</h5>
-    );
-
     return (
-      <form id="NPCEditor" onSubmit={ handleSubmit }>
-        <Panel header={<Field component={Header} name="id"/>}>
+      <form id="NPCEditor" spellCheck={false}>
+        <Panel
+          header={
+            <Field
+              name="type.id"
+              component={NPCEditorHeader}
+              formPristine={this.props.pristine}
+              formSubmitting={this.props.submitting}
+              deleteNPC={this.deleteNPC}
+              reset={this.props.reset}
+              handleSubmit={this.props.handleSubmit}
+            />
+          }
+        >
           <Row>
-            <Col md={7}>
+            <Col md={14}>
               <Row>
-                <Col md={12}>
+                <Col md={24} className="scroll-col" style={this.props.style}>
                   <FormSection name="type">
-                    <Type/>
+                    <NPCType />
                   </FormSection>
                 </Col>
               </Row>
               <Row>
-                <Col md={12}>
-                  <Tab.Container id="npc-panel" defaultActiveKey="specialatk">
+                <Col md={24}>
+                  <Tab.Container id="npc-panel" defaultActiveKey="specialabilities">
                     <Panel header={
                       <Nav bsStyle="tabs">
-                        <NavItem eventKey="specialatk">Special Atk</NavItem>
+                        <NavItem eventKey="specialabilities">Special Abilities</NavItem>
                         <NavItem eventKey="faction">Faction</NavItem>
                         <NavItem eventKey="emote">Emote</NavItem>
+                        <NavItem eventKey="tint">Tint</NavItem>
                       </Nav> 
                     }>
                       <Tab.Content animation={false} mountOnEnter={false} unmountOnExit={false}>
-                        <Tab.Pane eventKey="specialatk">
-                          SPECIAL ATTACKS
+                        <Tab.Pane eventKey="specialabilities">
+                          <Field component={NPCSpecialAbilities} name="type.special_abilities"/>
                         </Tab.Pane>
                         <Tab.Pane eventKey="faction">
                           FACTION
@@ -88,30 +99,33 @@ class NPCEditor extends React.Component {
                         <Tab.Pane eventKey="emote">
                           EMOTE
                         </Tab.Pane>
+                        <Tab.Pane eventKey="tint">
+                          TINT
+                        </Tab.Pane>
                       </Tab.Content>
                     </Panel>
                   </Tab.Container> 
                 </Col>
               </Row>
             </Col>
-            <Col md={5}>
+            <Col md={10}>
               <Row>
-                <Col md={12}>
+                <Col md={24}>
                   <h4>SPELLS</h4>
                 </Col>
               </Row>
               <Row>
-                <Col md={12}>
+                <Col md={24}>
                   <h4>EFFECTS</h4>
                 </Col>
               </Row>
               <Row>
-                <Col md={12}>
+                <Col md={24}>
                   <h4>MERCHANT</h4>
                 </Col>
               </Row>
               <Row>
-                <Col md={12}>
+                <Col md={24}>
                   <h4>LOOT</h4>
                 </Col>
               </Row>

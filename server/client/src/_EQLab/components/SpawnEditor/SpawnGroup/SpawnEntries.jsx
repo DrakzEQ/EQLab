@@ -59,7 +59,7 @@ class SpawnEntries extends React.Component {
               id={`${entry.npcID.input.value}`}
               onClick={this.handleDelete}
             >
-              <FontAwesome name="times" />
+              <FontAwesome name="chain-broken"/>
             </Button>
           </span> 
         </div>
@@ -75,9 +75,9 @@ class SpawnEntries extends React.Component {
           />
         </Row>
         <Row>
-          <Col md={12}>
+          <Col md={24}>
             <Well style={{ height: 400, overflowY: "scroll"}}>
-              <Table condensed={true} striped={true} responsive={true}>
+              <Table condensed={true} striped={true} responsive={false}>
                 <thead>
                   <tr>
                     <th>

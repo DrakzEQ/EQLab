@@ -22,7 +22,8 @@ module.exports = {
     `;
 
     let SQLdata = await db.raw(queryStr);
-    return sanitize(SQLdata[0]);
+    // return sanitize(SQLdata[0]);
+    return SQLdata[0];
   },
 
   getForageTable: async (zoneName) => {
@@ -55,7 +56,8 @@ module.exports = {
     let queryStr = `
     SELECT spawn2.id AS 'id', spawn2.zone, spawn2.version, spawn2.enabled, spawngroup.id AS 'spawngroup:id', 
     spawngroup.name AS 'spawngroup:name', spawnentry.chance AS 'spawngroup:spawnentries:chance', 
-    spawnentry.npcID AS 'spawngroup:spawnentries:npc_id', npc_types.name AS 'spawngroup:spawnentries:npc_name'
+    spawnentry.npcID AS 'spawngroup:spawnentries:npc_id', npc_types.name AS 'spawngroup:spawnentries:npc_name',
+    npc_types.level AS 'spawngroup:spawnentries:npc_level', npc_types.maxlevel AS 'spawngroup:spawnentries:npc_maxlevel'
     FROM spawn2
     LEFT JOIN spawngroup ON spawn2.spawngroupID = spawngroup.id
     LEFT JOIN spawnentry ON spawn2.spawngroupID = spawnentry.spawngroupID
@@ -65,16 +67,17 @@ module.exports = {
 
     let SQLdata = await db.raw(queryStr);
     let spawntree  = new Treeize();
-    SQLdata[0] = sanitize(SQLdata[0]);
+    // SQLdata[0] = sanitize(SQLdata[0]);
     spawntree = spawntree.grow(SQLdata[0]).getData();
-    return spawntree;
+    return spawntree
   },
 
   getSingleSpawn2Tree: async (spawn2ID) => {
     let queryStr = `
     SELECT spawn2.id AS 'id', spawn2.zone, spawn2.version, spawn2.enabled, spawngroup.id AS 'spawngroup:id', 
     spawngroup.name AS 'spawngroup:name', spawnentry.chance AS 'spawngroup:spawnentries:chance', 
-    spawnentry.npcID AS 'spawngroup:spawnentries:npc_id', npc_types.name AS 'spawngroup:spawnentries:npc_name'
+    spawnentry.npcID AS 'spawngroup:spawnentries:npc_id', npc_types.name AS 'spawngroup:spawnentries:npc_name',
+    npc_types.level AS 'spawngroup:spawnentries:npc_level', npc_types.maxlevel AS 'spawngroup:spawnentries:npc_maxlevel'
     FROM spawn2
     LEFT JOIN spawngroup ON spawn2.spawngroupID = spawngroup.id
     LEFT JOIN spawnentry ON spawn2.spawngroupID = spawnentry.spawngroupID
@@ -84,7 +87,6 @@ module.exports = {
 
     let SQLdata = await db.raw(queryStr);
     let spawntree  = new Treeize();
-    SQLdata[0] = sanitize(SQLdata[0]);
     spawntree = spawntree.grow(SQLdata[0]).getData();
     return spawntree[0];
   },
@@ -172,7 +174,7 @@ module.exports = {
   },
 
   insertSpawn2: async (zone = null) => {
-    return await db.insert('spawn2', [{ id: null, zone }]);
+    return await db.insert('spawn2', { id: null, zone });
   },
 
   updateSpawn2: async (id, values) => {
@@ -204,7 +206,7 @@ module.exports = {
   insertSpawngroup: async (spawn2ID, zone = 'noZone', values) => {
     if (spawn2ID) {
       let name = `${zone}_${Date.now().toString()}`;
-      let newSpawngroupID = await db.insert('spawngroup', [{ id: null, name }]);
+      let newSpawngroupID = await db.insert('spawngroup', { id: null, name });
       return await db.update('spawn2', { spawngroupID: newSpawngroupID }, { id: spawn2ID })
     } else {
       console.log('skipped if')
@@ -235,7 +237,7 @@ module.exports = {
   },
 
   insertSpawnentry: async (spawngroupID, npcID) => {
-    let test = await db.insert('spawnentry', [{ spawngroupID, npcID }]);
+    let test = await db.insert('spawnentry', { spawngroupID, npcID });
     console.log(test)
   },
 

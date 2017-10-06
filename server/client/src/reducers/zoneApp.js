@@ -50,8 +50,8 @@ export default (state = get_INITIAL_STATE(), action) => {
       return {
         ...state,
         spawnTree: state.spawnTree.map(spawn2 => {
-          if (spawn2.id === action.spawn2Tree.id) {
-            return action.spawn2Tree
+          if (spawn2.id === action.spawn2.id) {
+            return action.spawn2
           }
           return spawn2
         })

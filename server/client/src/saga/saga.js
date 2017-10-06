@@ -63,8 +63,8 @@ function* selectZone(action) {
 */
 
 function* refreshSingleSpawnTree(spawn2ID) {
-  const spawn2Tree = yield call(api.zone.getSingleSpawnTreeData, spawn2ID);
-  yield put({ type: ZONEAPP_REFRESH_SPAWN2, spawn2Tree });
+  const spawn2 = yield call(api.zone.getSingleSpawnTreeData, spawn2ID);
+  yield put({ type: ZONEAPP_REFRESH_SPAWN2, spawn2 });
 }
 
 function* refreshSpawnData(spawn2ID) {
@@ -82,14 +82,13 @@ function* postSpawn2(action) {
 
 function* updateSpawn2(action) {
   yield all([
-    call(refreshSpawn2, action.spawn2ID),
+    call(refreshSpawnData, action.spawn2ID),
     action.zone && call(refreshSingleSpawnTree, action.spawn2ID)
   ]);
 }
 
 function* deleteSpawn2(action) {
   yield call(api.zone.deleteSpawn2, action.spawn2ID);
-
   yield all([
     put({ type: GLOBAL_UNLOAD_SPAWN }),
     put({ type: ZONEAPP_REMOVE_SPAWN2, spawn2ID: action.spawn2ID })
@@ -99,7 +98,7 @@ function* deleteSpawn2(action) {
 function* changeSpawngroup(action) {
   yield call(api.zone.putSpawn2, action.spawn2ID, { "spawngroupID": action.spawngroupID });
   yield all([
-    call(refreshSpawn2, action.spawn2ID),
+    call(refreshSpawnData, action.spawn2ID),
     action.zone && call(refreshSingleSpawnTree, action.spawn2ID)
   ]);
 }
@@ -111,14 +110,14 @@ function* changeSpawngroup(action) {
 function* postSpawngroup(action) {
   yield call(api.zone.postSpawngroup, action.spawn2ID, action.zone);
   yield all([
-    call(refreshSpawn2, action.spawn2ID),
+    call(refreshSpawnData, action.spawn2ID),
     action.zone && call(refreshSingleSpawnTree, action.spawn2ID)
   ]);
 }
 
 function* updateSpawngroup(action) {
   yield all([
-    call(refreshSpawn2, action.spawn2ID),
+    call(refreshSpawnData, action.spawn2ID),
     action.zone && call(refreshSingleSpawnTree, action.spawn2ID)
   ]);
 }
@@ -126,7 +125,7 @@ function* updateSpawngroup(action) {
 function* deleteSpawngroup(action) {
   yield call(api.zone.deleteSpawngroup, action.id);
   yield all([
-    call(refreshSpawn2, action.spawn2ID),
+    call(refreshSpawnData, action.spawn2ID),
     action.zone && call(refreshSingleSpawnTree, action.spawn2ID)
   ]);
 }
@@ -138,7 +137,7 @@ function* deleteSpawngroup(action) {
 function* postSpawnentry(action) {
   yield call(api.zone.postSpawnentry, action.spawngroupID, action.npcID);
   yield all([
-    call(refreshSpawn2, action.spawn2ID),
+    call(refreshSpawnData, action.spawn2ID),
     action.zone && call(refreshSingleSpawnTree, action.spawn2ID)
   ]);
 }
@@ -146,7 +145,7 @@ function* postSpawnentry(action) {
 function* deleteSpawnentry(action) {
   yield call(api.zone.deleteSpawnentry, action.spawngroupID, action.npcID);
   yield all([
-    call(refreshSpawn2, action.spawn2ID),
+    call(refreshSpawnData, action.spawn2ID),
     action.zone && call(refreshSingleSpawnTree, action.spawn2ID)
   ]);
 }

@@ -47,7 +47,7 @@ class SpawnEntriesHeader extends React.Component {
   render() {
     return (
       <div id="SpawnEntriesHeader">
-        <Col md={10}>
+        <Col md={20}>
           <FormGroup> 
             <Select.Async
               name="selectnpc"
@@ -71,11 +71,12 @@ class SpawnEntriesHeader extends React.Component {
             />
           </FormGroup>
         </Col>
-        <Col md={2}>
+        <Col md={4}>
           <Button 
             bsStyle="primary" 
             bsSize="xs" 
             className="pull-right"
+            style={{ marginTop: 20 }}
             disabled={!this.state.npcID || this.props.formSubmitting}
             onClick={this.handleNewEntry}
           >
