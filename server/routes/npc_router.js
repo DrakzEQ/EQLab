@@ -4,6 +4,12 @@ const express    = require("express"),
       npc_router = express.Router(),
       npc        = require("../models/npc.js");
 
+npc_router.get("/spellsets/search/:searchTerm", (req, res, next) => {
+  npc.searchNPCSpells(req.params.searchTerm).then(data => {
+    res.status(200).type('json').json(data)
+  });
+});
+
 npc_router.get("/search/:searchTerm", (req, res, next) => {
   npc.searchNPCs(req.params.searchTerm).then(data => {
     res.status(200).type('json').json(data)
@@ -92,12 +98,12 @@ npc_router.get("/passivelist", (req, res, next) => {
 npc_router.get("/:npcID", async (req, res, next) => {
   res.status(200).type('json').json({
     "type": await npc.select([], { id: req.params.npcID }),
-    "spell": await npc.getSpells(req.params.npcID),
-    "effect": await npc.getEffects(req.params.npcID),
+    "spells": await npc.getSpells(req.params.npcID),
+    "effects": await npc.getEffects(req.params.npcID),
     "loot": await npc.getLootTableTree(req.params.npcID),
     "merchant": await npc.getMerchantTable(req.params.npcID),
     "faction": await npc.getFactions(req.params.npcID),
-    "emote": await npc.getEmotes(req.params.npcID),
+    "emotes": await npc.getEmotes(req.params.npcID),
     "tintset": await npc.getTints(req.params.npcID)
   })
 });

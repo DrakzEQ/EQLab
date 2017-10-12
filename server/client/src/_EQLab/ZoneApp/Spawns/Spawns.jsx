@@ -159,7 +159,7 @@ class Spawns extends React.Component {
             {
               this.state.mode
                 ? this.state.mode !== 'spawn'
-                    ? <NPCEditor npcID={this.state.id} style={{ height: 600 }}/>
+                    ? <NPCEditor npcID={this.state.id}/>
                     : <SpawnEditor zone={this.props.zone} spawn2ID={this.state.id}/>
                 : null
             }

@@ -1,7 +1,7 @@
 import React from 'react'
 import { Row, Col, Panel, Tab, Nav, NavItem, } from 'react-bootstrap'
 import { connect } from 'react-redux'
-import { reduxForm, FormSection, Field } from 'redux-form'
+import { reduxForm, FormSection, Field, Fields } from 'redux-form'
 import api from '../../../api.js'
 import {
   GLOBAL_LOAD_NPC,
@@ -10,7 +10,7 @@ import {
 import NPCEditorHeader from './NPCEditorHeader.jsx'
 import NPCType from './NPCType.jsx'
 import NPCSpecialAbilities from './NPCSpecialAbilities.jsx'
-// import NPCSpells from './NPCSpells.jsx'
+import NPCSpells from './NPCSpells.jsx'
 // import NPCLoot from './NPCLoot.jsx'
 
 
@@ -67,16 +67,17 @@ class NPCEditor extends React.Component {
               reset={this.props.reset}
               handleSubmit={this.props.handleSubmit}
             />
-          }
-        >
+        }>
           <Row>
             <Col md={14}>
               <Row>
-                <Col md={24} className="scroll-col" style={this.props.style}>
-                  <FormSection name="type">
-                    <NPCType />
-                  </FormSection>
-                </Col>
+                <Panel>
+                  <Col md={24} className="scroll-col"  style={{ height: 350 }}>
+                    <FormSection name="type">
+                      <NPCType />
+                    </FormSection>
+                  </Col>
+                </Panel>
               </Row>
               <Row>
                 <Col md={24}>
@@ -91,7 +92,10 @@ class NPCEditor extends React.Component {
                     }>
                       <Tab.Content animation={false} mountOnEnter={false} unmountOnExit={false}>
                         <Tab.Pane eventKey="specialabilities">
-                          <Field component={NPCSpecialAbilities} name="type.special_abilities"/>
+                          <Field 
+                            component={NPCSpecialAbilities} 
+                            name="type.special_abilities"
+                          />
                         </Tab.Pane>
                         <Tab.Pane eventKey="faction">
                           FACTION
@@ -109,26 +113,35 @@ class NPCEditor extends React.Component {
               </Row>
             </Col>
             <Col md={10}>
-              <Row>
-                <Col md={24}>
-                  <h4>SPELLS</h4>
-                </Col>
-              </Row>
-              <Row>
-                <Col md={24}>
-                  <h4>EFFECTS</h4>
-                </Col>
-              </Row>
-              <Row>
-                <Col md={24}>
-                  <h4>MERCHANT</h4>
-                </Col>
-              </Row>
-              <Row>
-                <Col md={24}>
-                  <h4>LOOT</h4>
-                </Col>
-              </Row>
+              <Tab.Container id="npc-panel" defaultActiveKey="npcspells">
+                <Panel header={
+                  <Nav bsStyle="tabs">
+                    <NavItem eventKey="npcspells">Spells</NavItem>
+                    <NavItem eventKey="npceffects">Passives</NavItem>
+                    <NavItem eventKey="npcloot">Loot</NavItem>
+                    <NavItem eventKey="npcmerchant">Merchant</NavItem>
+                  </Nav> 
+                }>
+                  <Tab.Content animation={false} mountOnEnter={false} unmountOnExit={false}>
+                    <Tab.Pane eventKey="npcspells">
+                      <Fields
+                        component={NPCSpells} 
+                        names={[ 'type.npc_spells_id', 'type.spellscale', 'type.healscale' ]}
+                        spells={this.props.initialValues.spells || null}
+                      />
+                    </Tab.Pane>
+                    <Tab.Pane eventKey="npceffects">
+                      PASSIVES
+                    </Tab.Pane>
+                    <Tab.Pane eventKey="npcloot">
+                      LOOT
+                    </Tab.Pane>
+                    <Tab.Pane eventKey="npcmerchant">
+                      MERCHANT
+                    </Tab.Pane>
+                  </Tab.Content>
+                </Panel>
+              </Tab.Container> 
             </Col>
           </Row>
         </Panel>

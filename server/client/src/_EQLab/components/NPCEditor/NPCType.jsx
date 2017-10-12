@@ -11,7 +11,7 @@ import {
   BODY_TYPES,
   MELEE_ATTACK_SKILLS,
   RANGE_ATTACK_SKILLS
-} from '../form/options/options.js'
+} from '../form/constants/constants.js'
 
 
 class NPCType extends React.PureComponent {
